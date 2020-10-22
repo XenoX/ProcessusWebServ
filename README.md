@@ -2,12 +2,6 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/mrstandu33/ProcessusWebServ)
 [![GitHub license](https://img.shields.io/github/license/mrstandu33/ProcessusWebServ.svg)](https://github.com/mrstandu33/ProcessusWebServ/blob/master/LICENSE)
 
-[![time tracker](https://wakatime.com/badge/github/mrstandu33/ProcessusWebServ.svg)](https://wakatime.com/badge/github/mrstandu33/ProcessusWebServ)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3411c636196449839ed2f0fc94a52e9b)](https://www.codacy.com/manual/mrstandu33/ProcessusWebServ?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mrstandu33/ProcessusWebServ&amp;utm_campaign=Badge_Grade)
-![HitCount](http://hits.dwyl.io/mrstandu33/ProcessusWebServ.svg)
-
-[![Twitch Status](https://img.shields.io/twitch/status/mrstandu33)](https://twitch.tv/mrstandu33)
-
 # Table of content
 <details>
   <ul>
@@ -38,7 +32,6 @@
                 <li><a href="#setup-terminal-colors">Setup terminal colors</a></li>
                 <li><a href="#setup-autoload-for-apache2">Setup autoload for Apache2</a></li>
                 <li><a href="#setup-autoload-for-mysql">Setup autoload for MySQL</a></li>
-                <li><a href="#setup-wakatime-api">Setup Wakatime API</a></li>
                 <li><a href="#setup-powerline-go">Setup Powerline Go</a></li>
                 <li><a href="#setup-archey4">Setup Archey4</a></li>
               </ul>
@@ -47,11 +40,7 @@
         </li>
         <li><a href="#create-apache2-virtualhost">Create Apache2 VirtualHost</a></li>
         <li>
-          <a href="#create-user">Create user</a>
-          <ul>
-            <li><a href="#mysql-user">MySQL user</a></li>
-            <li><a href="#unix-user">Unix user</a></li>
-          </ul>
+          <a href="#create-mysql-user">Create MySQL user</a>
         </li>
       </ul>
     </li>
@@ -70,7 +59,7 @@
   wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg && \
   echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php7.4.list && \
   apt-get update -y && \
-  apt-get install -y apache2 apache2-doc apache2-utils curl mariadb-server sendmail python3-pip git unzip emacs php7.4 php7.4-cli php7.4-fpm php7.4-json php7.4-pdo php7.4-mysql php7.4-zip php7.4-gd  php7.4-mbstring php7.4-curl php7.4-xml php7.4-bcmath php7.4-json libapache2-mod-php7.4 php-cli php-mbstring nodejs npm && \
+  apt-get install -y apache2 apache2-doc apache2-utils curl mariadb-server sendmail python3-pip git unzip vim emacs php7.4 php7.4-cli php7.4-fpm php7.4-json php7.4-pdo php7.4-mysql php7.4-zip php7.4-gd  php7.4-mbstring php7.4-curl php7.4-xml php7.4-bcmath php7.4-json libapache2-mod-php7.4 php-cli php-mbstring nodejs npm && \
   curl -sS https://getcomposer.org/installer -o composer-setup.php && \
   php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
   a2enmod rewrite && \
@@ -487,43 +476,6 @@
   ##### End Auto load MySQL #####
   ```
 ---
-#### Setup Wakatime API
-> https://wakatime.com/terminal#install-bash
-1. First :
-    * If you uses zsh :
-      1. Type in Bash :
-        ```bash
-        $ emacs ~/.zshrc
-        ```
-      2. Write inside the file :
-        ```bash
-        antigen bundle sobolevn/wakatime-zsh-plugin
-        ```
-    * If you uses bash :
-      1. Type in Bash :
-        ```bash
-        $ cd ~
-        $ git clone https://github.com/gjsheep/bash-wakatime.git
-        $ emacs ~/.bashrc
-        ```
-      2. Write inside the file :
-        ```bash
-        ##### Start Wakatime enabling #####
-        source ~/bash-wakatime/bash-wakatime.sh
-        ##### End Wakatime enabling #####
-        ```
-2. Visit https://wakatime.com/settings/account and copy your API KEY
-3. Type in Bash :
-  ```bash
-  $ pip3 install wakatime
-  $ emacs ~/.wakatime.cfg
-  ```
-4. Write inside the file :
-  ```conf
-  [settings]
-  api_key = $API_KEY
-  ```
----
 #### Setup Powerline Go
 > https://github.com/justjanne/powerline-go
 1. First :
@@ -636,7 +588,6 @@
   archey
   ##### End Archey enabling #####
   ```
-<br/>
 
 ## Create Apache2 VirtualHost
 1. Type in Bash :
@@ -659,11 +610,9 @@
   $ a2ensite sub.domain.ext
   $ service apache2 restart
   ```
-<br/>
 
-## Create user
+## Create MySQL user
 
-### MySQL user
 1. Type in Bash :
   ```bash
   $ mysql -u root -p
@@ -675,233 +624,4 @@
   > GRANT ALL PRIVILEGES ON database.* TO 'user'@'localhost';
   > FLUSH PRIVILEGES;
   > exit;
-  ```
-
-### Unix user
-1. Type in Bash :
-  ```bash
-  $ NEWUSER=nomprenom
-  $ useradd -m -s /bin/bash $NEWUSER
-  $ chmod 755 /home/$NEWUSER
-  $ rm /home/$NEWUSER/.bashrc
-  $ usermod -g www-data $NEWUSER
-  $ emacs /home/$NEWUSER/.bash_profile
-  ```
-2. Write inside the file :
-  ```bash
-  alias ls='ls --color=auto'
-  ##### Start Alias access blocking #####
-  alias su="printf ''"
-  alias sudo="printf ''"
-  alias apt-get="printf ''"
-  alias aptitude="printf ''"
-  alias exit="printf ''"
-  alias logout="printf ''"
-  alias passwd="printf ''"
-  alias rlogin="printf ''"
-  alias ssh="printf ''"
-  alias slogin="printf ''"
-  alias yppasswd="printf ''"
-  alias mail="printf ''"
-  alias mesg="printf ''"
-  alias pine="printf ''"
-  alias talk="printf ''"
-  alias write="printf ''"
-  alias as="printf ''"
-  alias awk="printf ''"
-  alias bc="printf ''"
-  alias cc="printf ''"
-  alias csh="printf ''"
-  alias dbx="printf ''"
-  alias f77="printf ''"
-  alias gdb="printf ''"
-  alias gprof="printf ''"
-  alias kill="printf ''"
-  alias ld="printf ''"
-  alias lex="printf ''"
-  alias lint="printf ''"
-  alias make="printf ''"
-  alias maple="printf ''"
-  alias math="printf ''"
-  alias nice="printf ''"
-  alias nohup="printf ''"
-  alias pc="printf ''"
-  alias perl="printf ''"
-  alias prof="printf ''"
-  alias python="printf ''"
-  alias sh="printf ''"
-  alias yacc="printf ''"
-  alias xcalc="printf ''"
-  alias apropos="printf ''"
-  alias find="printf ''"
-  alias info="printf ''"
-  alias man="printf ''"
-  alias whatis="printf ''"
-  alias whereis="printf ''"
-  alias chmod="printf ''"
-  alias chown="printf ''"
-  alias chgrp="printf ''"
-  alias cmp="printf ''"
-  alias comm="printf ''"
-  alias cp="printf ''"
-  alias crypt="printf ''"
-  alias diff="printf ''"
-  alias file="printf ''"
-  alias grep="printf ''"
-  alias gzip="printf ''"
-  alias ln="printf ''"
-  alias lsof="printf ''"
-  alias mkdir="printf ''"
-  alias mv="printf ''"
-  alias pwd="printf ''"
-  alias quota="printf ''"
-  alias rm="printf ''"
-  alias rmdir="printf ''"
-  alias stat="printf ''"
-  alias sync="printf ''"
-  alias sort="printf ''"
-  alias tar="printf ''"
-  alias tee="printf ''"
-  alias tr="printf ''"
-  alias umask="printf ''"
-  alias uncompress="printf ''"
-  alias uniq="printf ''"
-  alias cat="printf ''"
-  alias fold="printf ''"
-  alias head="printf ''"
-  alias lpq="printf ''"
-  alias lpr="printf ''"
-  alias lprm="printf ''"
-  alias more="printf ''"
-  alias less="printf ''"
-  alias page="printf ''"
-  alias pr="printf ''"
-  alias tail="printf ''"
-  alias zcat="printf ''"
-  alias xv="printf ''"
-  alias gv="printf ''"
-  alias xpdf="printf ''"
-  alias ftp="printf ''"
-  alias rsync="printf ''"
-  alias scp="printf ''"
-  alias alias="printf ''"
-  alias chquota="printf ''"
-  alias chsh="printf ''"
-  alias clear="printf ''"
-  alias echo="printf ''"
-  alias pbm="printf ''"
-  alias popd="printf ''"
-  alias pushd="printf ''"
-  alias script="printf ''"
-  alias setenv="printf ''"
-  alias stty="printf ''"
-  alias netstat="printf ''"
-  alias rsh="printf ''"
-  alias ssh="printf ''"
-  alias bg="printf ''"
-  alias fg="printf ''"
-  alias jobs="printf ''"
-  alias ^y="printf ''"
-  alias ^z="printf ''"
-  alias clock="printf ''"
-  alias date="printf ''"
-  alias df="printf ''"
-  alias du="printf ''"
-  alias env="printf ''"
-  alias finger="printf ''"
-  alias history="printf ''"
-  alias last="printf ''"
-  alias lpq="printf ''"
-  alias manpath="printf ''"
-  alias printenv="printf ''"
-  alias ps="printf ''"
-  alias pwd="printf ''"
-  alias set="printf ''"
-  alias spend="printf ''"
-  alias stty="printf ''"
-  alias time="printf ''"
-  alias top="printf ''"
-  alias uptime="printf ''"
-  alias w="printf ''"
-  alias who="printf ''"
-  alias whois="printf ''"
-  alias whoami="printf ''"
-  alias gimp="printf ''"
-  alias xfig="printf ''"
-  alias xv="printf ''"
-  alias xvscan="printf ''"
-  alias xpaint="printf ''"
-  alias kpaint="printf ''"
-  alias mplayer="printf ''"
-  alias realplay="printf ''"
-  alias timidity="printf ''"
-  alias xmms="printf ''"
-  alias abiword="printf ''"
-  alias addbib="printf ''"
-  alias col="printf ''"
-  alias diction="printf ''"
-  alias diffmk="printf ''"
-  alias dvips="printf ''"
-  alias explain="printf ''"
-  alias grap="printf ''"
-  alias hyphen="printf ''"
-  alias ispell="printf ''"
-  alias latex="printf ''"
-  alias pdfelatex="printf ''"
-  alias latex2html="printf ''"
-  alias lookbib="printf ''"
-  alias macref="printf ''"
-  alias ndx="printf ''"
-  alias neqn="printf ''"
-  alias nroff="printf ''"
-  alias pic="printf ''"
-  alias psdit="printf ''"
-  alias ptx="printf ''"
-  alias refer="printf ''"
-  alias roffbib="printf ''"
-  alias sortbib="printf ''"
-  alias spell="printf ''"
-  alias ispell="printf ''"
-  alias style="printf ''"
-  alias tbl="printf ''"
-  alias tex="printf ''"
-  alias tpic="printf ''"
-  alias wget="printf ''"
-  alias grabmode="printf ''"
-  alias import="printf ''"
-  alias xdpyinfo="printf ''"
-  alias xkill="printf ''"
-  alias xlock="printf ''"
-  alias xterm="printf ''"
-  alias xwininfo="printf ''"
-  alias html2ps="printf ''"
-  alias latex2html="printf ''"
-  alias lynx="printf ''"
-  alias netscape="printf ''"
-  alias sitecopy="printf ''"
-  alias weblint="printf ''"
-  alias vi="vi -Z" #this is vi's safe mode and shell commands won't be run from within vi
-  alias alias="printf ''"
-  ##### End Alias access blocking #####
-  ```
-3. Type in Bash :
-  ```bash
-  $ chown root:root /home/$NEWUSER/.bash_profile
-  $ chmod 755 /home/$NEWUSER/.bash_profile
-  $ ssh-keygen
-  ```
-  * If user uses Windows system, or will use FileZilla (or any program that use .ppk key files) :
-    <ul>
-      <li>Download /home/$NEWUSER/.ssh/id_rsa</li>
-      <li>Download PuTTY</li>
-      <li>Install PuTTYgen and open it</li>
-      <li>Click on `Conversions` > `Import key`</li>
-      <li>Type passphrase</li>
-      <li>Export private key to .ppk format</li>
-    </ul>
-4. Type in Bash :
-  ```bash
-  $ cat /home/$NEWUSER/.ssh/id_rsa.pub >> /home/$NEWUSER/.ssh/authorized_keys
-  $ chmod -R go= /home/$NEWUSER/.ssh/
-  $ chown -R $NEWUSER:$NEWUSER /home/$NEWUSER/.ssh/
   ```
